@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AurinkoLab Projects</title>
+<meta name="description" content="Four hands-on build projects for communities: a solar electric boat, an electric go-kart, bird-listening stations and line-following robots.">
+<style>
+  :root {
+    --bg: #fbf8f1;
+    --surface: #ffffff;
+    --surface-2: #f3eee2;
+    --ink: #1c2733;
+    --muted: #55606c;
+    --line: #ddd5c3;
+    --accent: #c46a00;       /* sun */
+    --accent-ink: #ffffff;
+    --sea: #0f6b7a;
+    --sea-tint: #dff0f2;
+    --sun-tint: #fbe9cc;
+    --focus: #0b57d0;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12181f; --surface: #1a232c; --surface-2: #202b35;
+      --ink: #eef2f5; --muted: #a7b3bf; --line: #2e3b47;
+      --accent: #f0a640; --accent-ink: #1a1305;
+      --sea: #5cc4d3; --sea-tint: #173740; --sun-tint: #3a2c12;
+      --focus: #8ab4f8; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12181f; --surface: #1a232c; --surface-2: #202b35;
+    --ink: #eef2f5; --muted: #a7b3bf; --line: #2e3b47;
+    --accent: #f0a640; --accent-ink: #1a1305;
+    --sea: #5cc4d3; --sea-tint: #173740; --sun-tint: #3a2c12;
+    --focus: #8ab4f8; color-scheme: dark;
+  }
+
+  .al * { box-sizing: border-box; }
+  .al {
+    background: var(--bg); color: var(--ink);
+    font: 16px/1.6 "Avenir Next", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+    margin: 0; padding-block: 0;
+  }
+  body { margin: 0; background: var(--bg); }
+  .al a { color: var(--sea); }
+  .al a:focus-visible, .al button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+  .al .wrap { max-width: 1080px; margin-inline: auto; padding-inline: 20px; }
+  .al h1, .al h2, .al h3 { line-height: 1.2; text-wrap: balance; margin: 0; }
+
+  /* Hero */
+  .al .hero { padding-block: 56px 36px; border-bottom: 1px solid var(--line); }
+  .al .eyebrow { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--sea); font-weight: 700; margin: 0 0 14px; }
+  .al h1 { font-size: clamp(30px, 5vw, 46px); font-weight: 800; max-width: 18ch; }
+  .al .lead { font-size: 18px; color: var(--muted); max-width: 62ch; margin: 18px 0 0; }
+
+  /* Overview table */
+  .al .overview { padding-block: 32px 8px; }
+  .al .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+  .al table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15px; }
+  .al th, .al td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .al thead th { background: var(--surface-2); font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+  .al tbody tr:last-child td { border-bottom: 0; }
+  .al td.num, .al th.num { font-variant-numeric: tabular-nums; }
+  .al td:first-child a { font-weight: 700; text-decoration: none; }
+  .al td:first-child a:hover { text-decoration: underline; }
+
+  /* Cards */
+  .al .projects { padding-block: 32px 16px; }
+  .al .grid { display: grid; gap: 24px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .al .card { --pad: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: var(--pad); display: flex; flex-direction: column; gap: 14px; min-width: 0; overflow: hidden; scroll-margin-top: 16px; }
+  .al .card > .card-foot { margin-top: auto; }
+  /* Rows of neighbouring cards line up (photos, title, facts, lists, price) */
+  @supports (grid-template-rows: subgrid) {
+    .al .card { display: grid; grid-template-rows: subgrid; grid-row: span 6; row-gap: 14px; }
+    .al .card > .card-foot { margin-top: 0; align-self: end; }
+  }
+  /* Photo carousel: one photo at a time, swipe or arrows, click to enlarge */
+  .al .gallery { position: relative; margin: calc(var(--pad) * -1) calc(var(--pad) * -1) 4px; background: var(--surface-2); }
+  .al .track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; aspect-ratio: 16 / 10; overscroll-behavior-x: contain; }
+  .al .track::-webkit-scrollbar { display: none; }
+  .al .slide { flex: 0 0 100%; scroll-snap-align: center; scroll-snap-stop: always; height: 100%; margin: 0; padding: 0; border: 0; background: none; cursor: zoom-in; display: block; }
+  .al .slide img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); }
+  .al .nav { position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border-radius: 50%; border: 0; cursor: pointer; display: grid; place-items: center; background: rgba(255,255,255,.88); color: #1c2733; box-shadow: 0 1px 4px rgba(0,0,0,.35); padding: 0; }
+  .al .nav svg { width: 20px; height: 20px; }
+  .al .nav.prev { left: 10px; } .al .nav.next { right: 10px; }
+  .al .nav:hover { background: #fff; }
+  .al .nav[aria-disabled="true"] { opacity: .35; cursor: default; }
+  .al .gcount { position: absolute; right: 10px; bottom: 10px; background: rgba(20,28,36,.78); color: #fff; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 99px; font-variant-numeric: tabular-nums; pointer-events: none; }
+  .al .gcount svg { width: 12px; height: 12px; vertical-align: -1px; margin-right: 5px; }
+
+  /* Enlarged photo */
+  .al dialog.lb { border: 0; padding: 0; background: transparent; width: 100vw; height: 100vh; max-width: 100vw; max-height: 100vh; color: #fff; }
+  .al dialog.lb::backdrop { background: rgba(8,12,16,.97); }
+  .al .lb-stage { width: 100%; height: 100%; display: grid; grid-template-rows: minmax(0, 1fr) auto; place-items: center; padding: 56px 64px 16px; gap: 10px; }
+  .al .lb-stage img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 6px; }
+  .al .lb-cap { font-size: 14px; text-align: center; max-width: 70ch; color: #dfe6ec; }
+  .al .lb-btn { position: absolute; width: 44px; height: 44px; border-radius: 50%; border: 0; background: rgba(255,255,255,.16); color: #fff; cursor: pointer; display: grid; place-items: center; padding: 0; }
+  .al .lb-btn:hover { background: rgba(255,255,255,.3); }
+  .al .lb-btn svg { width: 22px; height: 22px; }
+  .al .lb-close { top: 10px; right: 10px; } .al .lb-prev { left: 10px; top: 50%; transform: translateY(-50%); } .al .lb-next { right: 10px; top: 50%; transform: translateY(-50%); }
+  .al .lb-count { position: absolute; top: 20px; left: 20px; font-size: 13px; font-weight: 700; color: #cfd8df; font-variant-numeric: tabular-nums; }
+  .al .body { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .al .card-head { display: flex; gap: 16px; align-items: center; }
+  .al .icon { flex: none; width: 64px; height: 64px; border-radius: 14px; display: grid; place-items: center; background: var(--sun-tint); color: var(--accent); }
+  .al .icon.sea { background: var(--sea-tint); color: var(--sea); }
+  .al .icon svg { width: 40px; height: 40px; }
+  .al .card h3 { font-size: 22px; font-weight: 800; }
+  .al .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 0; padding: 0; list-style: none; }
+  .al .tags li { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 99px; background: var(--surface-2); color: var(--muted); }
+  .al .tagline { margin: 0; font-size: 17px; }
+  .al .facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0; }
+  .al .facts div { background: var(--surface-2); border-radius: 10px; padding: 10px 12px; min-width: 0; }
+  .al .facts dt { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .al .facts dd { margin: 2px 0 0; font-weight: 700; font-size: 15px; font-variant-numeric: tabular-nums; }
+  .al .card h4 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; }
+  .al .card ul.list { margin: 0; padding-left: 20px; }
+  .al .card ul.list li { margin-bottom: 4px; }
+  .al .note { font-size: 14px; color: var(--muted); margin: 0; }
+  .al .card-foot { border-top: 1px solid var(--line); padding-top: 16px; display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: end; justify-content: space-between; }
+  .al .price { display: grid; }
+  .al .price small { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .al .price strong { font-size: 28px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .al .price span { font-size: 13px; color: var(--muted); }
+  .al .links { display: flex; flex-wrap: wrap; gap: 8px; }
+  .al .btn { display: inline-block; padding: 9px 14px; border-radius: 10px; border: 1px solid var(--sea); color: var(--sea); text-decoration: none; font-weight: 700; font-size: 14px; }
+  .al .btn:hover { background: var(--sea-tint); }
+  .al .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .al .btn.primary:hover { filter: brightness(1.06); background: var(--accent); }
+
+  /* How it works */
+  .al .how { padding-block: 24px 40px; }
+  .al .how h2 { font-size: 26px; margin-bottom: 18px; }
+  .al ol.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(4, minmax(0, 1fr)); counter-reset: s; }
+  .al ol.steps li { counter-increment: s; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; min-width: 0; }
+  .al ol.steps li::before { content: counter(s); display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font-weight: 800; margin-bottom: 10px; }
+  .al ol.steps strong { display: block; margin-bottom: 4px; }
+  .al ol.steps p { margin: 0; font-size: 15px; color: var(--muted); }
+
+  .al .contact { background: var(--sea-tint); border-block: 1px solid var(--line); padding-block: 32px; }
+  .al .contact h2 { font-size: 24px; margin-bottom: 8px; }
+  .al .contact p { margin: 0 0 14px; max-width: 62ch; }
+
+  .al .slide.fit { background: #f6f4ee; }
+  .al .slide.fit img { object-fit: contain; }
+  .al button.btn { cursor: pointer; font-family: inherit; background: transparent; }
+  .al .form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; max-width: 720px; margin-top: 18px; }
+  .al .form .full { grid-column: 1 / -1; }
+  .al .form label { display: flex; flex-direction: column; gap: 5px; font-size: 14px; font-weight: 700; min-width: 0; }
+  .al .form input, .al .form select, .al .form textarea { font: inherit; font-weight: 400; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); width: 100%; min-width: 0; }
+  .al .form textarea { min-height: 110px; resize: vertical; }
+  .al .form input:focus-visible, .al .form select:focus-visible, .al .form textarea:focus-visible { outline: 3px solid var(--focus); outline-offset: 1px; }
+  .al .form .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .al .form button[disabled] { opacity: .6; cursor: wait; }
+  .al .form-status { margin: 0; font-weight: 700; min-height: 1.4em; }
+  .al .form-status.ok { color: var(--sea); } .al .form-status.err { color: #b3261e; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .al .form-status.err { color: #ff8a80; } }
+  :root[data-theme="dark"] .al .form-status.err { color: #ff8a80; }
+  .al dialog.rq { border: 1px solid var(--line); border-radius: 16px; padding: 24px; background: var(--surface); color: var(--ink); width: min(480px, calc(100vw - 32px)); }
+  .al dialog.rq::backdrop { background: rgba(8,12,16,.7); }
+  .al dialog.rq h2 { font-size: 21px; margin-bottom: 6px; }
+  .al dialog.rq p { margin: 0; }
+  .al dialog.rq .form { grid-template-columns: 1fr; margin-top: 14px; }
+  .al .rq-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  @media (max-width: 600px) { .al .form { grid-template-columns: 1fr; } }
+  .al footer { padding-block: 24px 40px; color: var(--muted); font-size: 14px; }
+  .al footer p { margin: 0 0 6px; }
+
+  @media (max-width: 860px) {
+    .al .grid { grid-template-columns: minmax(0, 1fr); }
+    .al ol.steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 520px) {
+    .al .facts { grid-template-columns: minmax(0, 1fr); }
+    .al ol.steps { grid-template-columns: minmax(0, 1fr); }
+    .al .card { --pad: 18px; }
+    .al .nav { width: 36px; height: 36px; }
+    .al .lb-stage { padding: 56px 12px 72px; }
+    .al .lb-prev, .al .lb-next { top: auto; bottom: 14px; transform: none; }
+    .al .lb-prev { left: 14px; } .al .lb-next { right: 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="al">
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">AurinkoLab · hands-on engineering for young people</p>
+    <h1>Projects your community can build</h1>
+    <p class="lead">Each project is a complete, tested way to learn by making: young people assemble real machines and instruments, test them, and then race, measure or observe. Kits and guidance come from AurinkoLab; the results stay with your community.</p>
+  </div>
+</header>
+
+<section class="overview" aria-labelledby="ov-h">
+  <div class="wrap">
+    <h2 id="ov-h" style="font-size:22px;margin-bottom:14px">At a glance</h2>
+    <div class="tablewrap" role="region" aria-label="Project comparison">
+      <table>
+        <thead>
+          <tr><th scope="col">Project</th><th scope="col">Group</th><th scope="col">Time</th><th scope="col" class="num">Startup cost</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><a href="#boat">Solar Electric Boat</a></td><td>Teams of 6, ages 15+</td><td>55 hours</td><td class="num">€7,500</td></tr>
+          <tr><td><a href="#kart">Electric Go-Kart</a></td><td>Teams of 3–4, ages 12+</td><td>34 hours</td><td class="num">€4,500</td></tr>
+          <tr><td><a href="#birds">BongaaBirds Stations</a></td><td>Classes, ages 10+</td><td>4 lessons</td><td class="num">€1,250</td></tr>
+          <tr><td><a href="#robots">Line-Following Robots</a></td><td>10–30 participants</td><td>1–2 day event</td><td class="num">€3,800</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="projects" aria-labelledby="pr-h">
+  <div class="wrap">
+    <h2 id="pr-h" style="position:absolute;left:-9999px">Projects</h2>
+    <div class="grid">
+
+      <!-- BOAT -->
+      <article class="card" id="boat">
+        <div class="gallery" role="region" aria-roledescription="carousel" aria-label="Photos: Solar Electric Boat">
+          <div class="track" tabindex="0">
+            <button class="slide" type="button" data-full="images/boat-1.jpg" aria-label="Enlarge photo 1 of 2"><img style="--pos:50% 80%" src="images/boat-1.jpg" width="952" height="575" alt="A blue solar-electric boat with solar panels on the shore of a lake"></button>
+            <button class="slide" type="button" data-full="images/boat-2.jpg" aria-label="Enlarge photo 2 of 2"><img src="images/boat-2.jpg" width="863" height="498" alt="Two electric boats racing on a lake, seen from above" loading="lazy"></button>
+          </div>
+          <button class="nav prev" type="button" aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button class="nav next" type="button" aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          <div class="gcount" aria-live="polite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="M15 15l6 6M10 7v6M7 10h6"/></svg><span>1 / 2</span></div>
+        </div>
+        <div class="card-head">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="35" cy="9" r="4"/><path d="M24 12v20M24 14l12 16H24"/><path d="M6 34h36l-5 8H11z"/></svg>
+          </div>
+          <div>
+            <h3>Solar Electric Boat</h3>
+            <ul class="tags"><li>Environmental sustainability</li><li>Digital skills</li></ul>
+          </div>
+        </div>
+        <p class="tagline">Teams of six build a solar-electric boat from a complete kit, then race it against other teams in a regatta.</p>
+        <dl class="facts">
+          <div><dt>Age</dt><dd>15+</dd></div>
+          <div><dt>Team</dt><dd>6 people</dd></div>
+          <div><dt>Total time</dt><dd>55 hours</dd></div>
+        </dl>
+        <div class="body">
+        <div>
+          <h4>Time plan</h4>
+          <ul class="list">
+            <li>45 hours of assembly</li>
+            <li>4 hours of regatta preparation</li>
+            <li>6-hour regatta</li>
+          </ul>
+        </div>
+        <div>
+          <h4>What the community gets</h4>
+          <ul class="list">
+            <li>One complete boat kit</li>
+            <li>A guide for forming teams and running the courses</li>
+            <li>Project support from AurinkoLab</li>
+            <li>The boat stays with the community</li>
+          </ul>
+        </div>
+        </div>
+        <div class="card-foot">
+          <div class="price"><small>Startup cost</small><strong>€7,500</strong><span>one boat kit</span></div>
+          <div class="links">
+            <button class="btn" type="button" data-request="Team and course guide (Solar Electric Boat)">Team and course guide</button>
+            <a class="btn" data-link="boatVideo" href="#" hidden>Watch the video</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- KART -->
+      <article class="card" id="kart">
+        <div class="gallery" role="region" aria-roledescription="carousel" aria-label="Photos: Electric Go-Kart">
+          <div class="track" tabindex="0">
+            <button class="slide" type="button" data-full="images/kart-1.png" aria-label="Enlarge photo 1 of 3"><img style="--pos:50% 55%" src="images/kart-1.png" width="960" height="527" alt="Competition"></button>
+            <button class="slide" type="button" data-full="images/kart-2.jpg" aria-label="Enlarge photo 2 of 3"><img style="--pos:50% 55%" src="images/kart-2.jpg" width="900" height="577" alt="Plywood frames for two go-karts, ready for assembly" loading="lazy"></button>
+            <button class="slide" type="button" data-full="images/kart-3.jpg" aria-label="Enlarge photo 3 of 3"><img style="--pos:50% 55%" src="images/kart-3.jpg" width="900" height="577" alt="A participant spray-painting a go-kart frame" loading="lazy"></button>
+          </div>
+          <button class="nav prev" type="button" aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button class="nav next" type="button" aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          <div class="gcount" aria-live="polite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="M15 15l6 6M10 7v6M7 10h6"/></svg><span>1 / 3</span></div>
+        </div>
+        <div class="card-head">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="34" r="6"/><circle cx="36" cy="34" r="6"/><path d="M13 28l5-12h8l3 7h9l-1 5M19 28h14M22 16V10h6"/></svg>
+          </div>
+          <div>
+            <h3>Electric Go-Kart</h3>
+            <ul class="tags"><li>Environmental sustainability</li><li>Digital skills</li></ul>
+          </div>
+        </div>
+        <p class="tagline">Young people build an electric go-kart from a kit, learn how an electric drive works and then compete with other teams.</p>
+        <dl class="facts">
+          <div><dt>Age</dt><dd>12+</dd></div>
+          <div><dt>Team</dt><dd>3–4 people</dd></div>
+          <div><dt>Total time</dt><dd>34 hours</dd></div>
+        </dl>
+        <div class="body">
+        <div>
+          <h4>Time plan</h4>
+          <ul class="list">
+            <li>30 hours of assembly</li>
+            <li>2 hours of race preparation</li>
+            <li>2-hour race</li>
+          </ul>
+          <p class="note" style="margin-top:8px">Before joining, each participant takes a short online <a href="https://project.aurinkolab.fi/skills-check" rel="noopener">skills check</a>.</p>
+        </div>
+        <div>
+          <h4>What the community gets</h4>
+          <ul class="list">
+            <li>One go-kart kit</li>
+            <li>An assembly manual and a video guide</li>
+            <li>The kart stays with the community</li>
+          </ul>
+        </div>
+        </div>
+        <div class="card-foot">
+          <div class="price"><small>Startup cost</small><strong>€4,500</strong><span>one go-kart kit</span></div>
+          <div class="links">
+            <a class="btn" href="https://project.aurinkolab.fi/skills-check" rel="noopener">Skills check</a>
+            <button class="btn" type="button" data-request="Assembly manual (Electric Go-Kart)">Assembly manual</button>
+            <a class="btn" data-link="kartVideo" href="#" hidden>Watch the video</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- BIRDS -->
+      <article class="card" id="birds">
+        <div class="gallery" role="region" aria-roledescription="carousel" aria-label="Photos: BongaaBirds Stations">
+          <div class="track" tabindex="0">
+            <button class="slide" type="button" data-full="images/birds-1.jpg" aria-label="Enlarge photo 1 of 2"><img style="--pos:50% 35%" src="images/birds-1.jpg" width="517" height="564" alt="A BongaaBirds station on a tripod by a lake"></button>
+            <button class="slide" type="button" data-full="images/birds-2.jpg" aria-label="Enlarge photo 2 of 2"><img src="images/birds-2.jpg" width="418" height="232" alt="A BongaaBirds station mounted in a wooden birdhouse" loading="lazy"></button>
+            <button class="slide fit" type="button" data-full="images/birds-3.jpg" aria-label="Enlarge photo 3 of 3"><img src="images/birds-3.jpg" width="1600" height="920" alt="Exploded view of a BongaaBirds station: microphone, front casing, circuit board, batteries, back casing, solar panel and tripod" loading="lazy"></button>
+          </div>
+          <button class="nav prev" type="button" aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button class="nav next" type="button" aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          <div class="gcount" aria-live="polite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="M15 15l6 6M10 7v6M7 10h6"/></svg><span>1 / 3</span></div>
+        </div>
+        <div class="card-head">
+          <div class="icon sea" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 28c6 0 10-3 12-8 2-6 8-9 14-7l5 3-4 2c0 10-8 20-20 20-5 0-8-2-10-6z"/><circle cx="31" cy="17" r="1.2" fill="currentColor"/><path d="M38 16l5-1"/></svg>
+          </div>
+          <div>
+            <h3>BongaaBirds Stations</h3>
+            <ul class="tags"><li>Environmental sustainability</li><li>Digital skills</li></ul>
+          </div>
+        </div>
+        <p class="tagline">Young people build two low-cost stations that recognise bird calls on the device, then install them and follow the detections on a shared map.</p>
+        <dl class="facts">
+          <div><dt>Age</dt><dd>10+</dd></div>
+          <div><dt>Format</dt><dd>4 lessons</dd></div>
+          <div><dt>Stations</dt><dd>2</dd></div>
+        </dl>
+        <div class="body">
+        <div>
+          <h4>Lessons</h4>
+          <ul class="list">
+            <li>Lessons 1–3: assemble the stations and test the AI model</li>
+            <li>Lesson 4: install the stations, watch the birds, and analyse the dynamics and which species passed through</li>
+          </ul>
+          <p class="note" style="margin-top:8px">The stations listen to birds only: speech is filtered out before any recording is stored.</p>
+        </div>
+        <div>
+          <h4>What the community gets</h4>
+          <ul class="list">
+            <li>Two station kits: microphone, processing unit, power supply and weatherproof case</li>
+            <li>Guidance for each lesson and access to the bird map</li>
+            <li>Project support from AurinkoLab</li>
+          </ul>
+        </div>
+        </div>
+        <div class="card-foot">
+          <div class="price"><small>Startup cost</small><strong>€1,250</strong><span>two stations</span></div>
+          <div class="links">
+            <a class="btn" href="https://yle.fi/a/20-10004726" rel="noopener">See the bird map</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- ROBOTS -->
+      <article class="card" id="robots">
+        <div class="gallery" role="region" aria-roledescription="carousel" aria-label="Photos: Line-Following Robots Workshop">
+          <div class="track" tabindex="0">
+            <button class="slide" type="button" data-full="images/robots-1.jpg" aria-label="Enlarge photo 1 of 3"><img src="images/robots-1.jpg" width="462" height="353" alt="Illustrated city-map track with local landmarks, used as the robot racing track"></button>
+            <button class="slide" type="button" data-full="images/robots-2.jpg" aria-label="Enlarge photo 2 of 3"><img style="--pos:50% 25%" src="images/robots-2.jpg" width="190" height="282" alt="A line-following robot on a black track" loading="lazy"></button>
+            <button class="slide" type="button" data-full="images/robots-3.jpg" aria-label="Enlarge photo 3 of 3"><img src="images/robots-3.jpg" width="203" height="150" alt="Robots driving on a city-map track" loading="lazy"></button>
+          </div>
+          <button class="nav prev" type="button" aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button class="nav next" type="button" aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          <div class="gcount" aria-live="polite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="M15 15l6 6M10 7v6M7 10h6"/></svg><span>1 / 3</span></div>
+        </div>
+        <div class="card-head">
+          <div class="icon sea" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="14" width="30" height="18" rx="5"/><circle cx="18" cy="23" r="2.6"/><circle cx="30" cy="23" r="2.6"/><path d="M24 14V8M21 8h6M14 38h20M16 32v6M32 32v6"/></svg>
+          </div>
+          <div>
+            <h3>Line-Following Robots Workshop</h3>
+            <ul class="tags"><li>Digital skills</li><li>Community connection</li></ul>
+          </div>
+        </div>
+        <p class="tagline">A 1–2 day workshop with 10 robot kits: participants assemble the robots, program them and compete in timed runs on a track and with robot artwork made for their own city.</p>
+        <dl class="facts">
+          <div><dt>Participants</dt><dd>10–30</dd></div>
+          <div><dt>Event</dt><dd>1–2 days</dd></div>
+          <div><dt>Kits</dt><dd>10 robots</dd></div>
+        </dl>
+        <div class="body">
+        <div>
+          <h4>How it runs</h4>
+          <ul class="list">
+            <li>One kit per person or per team of up to three</li>
+            <li>Block-based coding in mBlock or C++ with Arduino Wiring</li>
+            <li>Tasks grow from simple turning rules to comparing sensor layouts and P/PD/PID control</li>
+            <li>Local facilitators teach; the host provides a venue, laptops and tools</li>
+          </ul>
+          <p class="note" style="margin-top:8px">Proven in Riihimäki, where students designed a city-map track and a bus robot with local partners.</p>
+        </div>
+        <div>
+          <h4>What the community gets</h4>
+          <ul class="list">
+            <li>Ten Arduino-compatible robot kits and one shared printed track showing your city or region</li>
+            <li>Robot artwork designed for your city or region</li>
+            <li>Spare parts, open-source instructions and code examples</li>
+            <li>Four hours of remote facilitator training and consultation</li>
+            <li>Kits stay with the community</li>
+          </ul>
+        </div>
+        </div>
+        <div class="card-foot">
+          <div class="price"><small>Startup cost</small><strong>€3,800</strong><span>including a city-specific map and robot artwork</span></div>
+          <div class="links">
+            <a class="btn" data-link="robotsInfo" href="#" hidden>Project concept (PDF)</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="how" aria-labelledby="how-h">
+  <div class="wrap">
+    <h2 id="how-h">How a project starts</h2>
+    <ol class="steps">
+      <li><strong>Choose a project</strong><p>Pick the one that fits your group's age, time and budget.</p></li>
+      <li><strong>Form a team</strong><p>Gather your participants and a local facilitator or teacher.</p></li>
+      <li><strong>Secure funding</strong><p>Use the startup cost above when applying to a community fund or grant.</p></li>
+      <li><strong>Build and share</strong><p>We provide the kit and guidance; you build, test and show the results.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="contact" id="contact" aria-labelledby="ct-h">
+  <div class="wrap">
+    <h2 id="ct-h">Start a project with AurinkoLab</h2>
+    <p>Tell us which project you are interested in, who the participants are and where you are. We will confirm the scope, the kit and the delivery.</p>
+    <form class="form" id="contact-form" action="https://formspree.io/f/C2gQnNq6cJ" method="POST">
+      <label>Your name<input name="name" type="text" autocomplete="name" required></label>
+      <label>Email<input name="email" type="email" autocomplete="email" required></label>
+      <label>Organisation or school<input name="organisation" type="text" autocomplete="organization"></label>
+      <label>Project
+        <select name="project">
+          <option>Solar Electric Boat</option>
+          <option>Electric Go-Kart</option>
+          <option>BongaaBirds Stations</option>
+          <option>Line-Following Robots Workshop</option>
+          <option>Not sure yet</option>
+        </select>
+      </label>
+      <label>City or region<input name="location" type="text"></label>
+      <label>Number and age of participants<input name="participants" type="text" placeholder="e.g. 12 students, ages 13–15"></label>
+      <label class="full">Message<textarea name="message" required></textarea></label>
+      <div class="hp" aria-hidden="true"><label>Leave empty<input name="_gotcha" type="text" tabindex="-1" autocomplete="off"></label></div>
+      <input type="hidden" name="_subject" value="AurinkoLab project enquiry">
+      <input type="hidden" name="request" value="Start a project">
+      <div class="full"><button class="btn primary" type="submit">Send enquiry</button></div>
+      <p class="form-status full" role="status" aria-live="polite"></p>
+    </form>
+    <p><a class="btn" id="contact-btn" href="https://aurinkolab.fi">Visit aurinkolab.fi</a></p>
+    <p class="note" id="contact-line" hidden></p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Costs are planning estimates; the final scope and price are agreed with each community. Kits remain with the community after the project.</p>
+    <p>AurinkoLab · <a href="https://aurinkolab.fi">aurinkolab.fi</a></p>
+  </div>
+</footer>
+
+<dialog class="rq" id="rq" aria-labelledby="rq-h">
+  <h2 id="rq-h">Request</h2>
+  <p>Leave your email and we will send it to you.</p>
+  <form class="form" id="rq-form" action="https://formspree.io/f/C2gQnNq6cJ" method="POST">
+    <label>Your name<input name="name" type="text" autocomplete="name" required></label>
+    <label>Email<input name="email" type="email" autocomplete="email" required></label>
+    <label>Organisation or school<input name="organisation" type="text" autocomplete="organization"></label>
+    <div class="hp" aria-hidden="true"><label>Leave empty<input name="_gotcha" type="text" tabindex="-1" autocomplete="off"></label></div>
+    <input type="hidden" name="_subject" value="AurinkoLab request">
+    <input type="hidden" name="request" id="rq-what" value="">
+    <div class="rq-actions"><button class="btn primary" type="submit">Send request</button><button class="btn" type="button" id="rq-close">Close</button></div>
+    <p class="form-status" role="status" aria-live="polite"></p>
+  </form>
+</dialog>
+
+<dialog class="lb" id="lb" aria-label="Enlarged photo">
+  <div class="lb-stage" id="lb-stage">
+    <img id="lb-img" alt="">
+    <p class="lb-cap" id="lb-cap"></p>
+  </div>
+  <div class="lb-count" id="lb-count"></div>
+  <button class="lb-btn lb-close" type="button" id="lb-close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <button class="lb-btn lb-prev" type="button" id="lb-prev" aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button class="lb-btn lb-next" type="button" id="lb-next" aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+</dialog>
+
+</div>
+
+<script>
+  /* ---- Settings. The guide, the manual and all enquiries are sent through Formspree (see FORM_URL) ---- */
+  var FORM_URL = "https://formspree.io/f/C2gQnNq6cJ";
+  var SETTINGS = {
+    contactEmail: "",          /* e.g. "hello@aurinkolab.fi"; shown as text and as a link */
+    links: {                   /* leave "" to keep a button hidden */
+      boatVideo: "https://youtu.be/GRI6c1rVc4g",
+      kartVideo: "https://youtube.com/shorts/Wvn12zdpsb4",
+      robotsInfo: "docs/Aurinkolab-Ondroid-robot-workshops-concept.pdf"   /* project concept PDF */
+    }
+  };
+
+  /* ---- Photo carousels and enlarged view ---- */
+  (function () {
+    var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var behavior = reduce ? "auto" : "smooth";
+    var galleries = Array.prototype.slice.call(document.querySelectorAll(".gallery"));
+    var lb = document.getElementById("lb"), lbImg = document.getElementById("lb-img"),
+        lbCap = document.getElementById("lb-cap"), lbCount = document.getElementById("lb-count");
+    var current = null, currentIndex = 0, opener = null;
+
+    galleries.forEach(function (g) {
+      var track = g.querySelector(".track"), slides = g.querySelectorAll(".slide");
+      var prev = g.querySelector(".prev"), next = g.querySelector(".next"), count = g.querySelector(".gcount span");
+      Array.prototype.forEach.call(slides, function (s, i) { s.setAttribute("aria-label", "Enlarge photo " + (i + 1) + " of " + slides.length); });
+      function index() { return Math.round(track.scrollLeft / Math.max(1, track.clientWidth)); }
+      function update() {
+        var i = Math.min(slides.length - 1, Math.max(0, index()));
+        count.textContent = (i + 1) + " / " + slides.length;
+        prev.setAttribute("aria-disabled", i === 0 ? "true" : "false");
+        next.setAttribute("aria-disabled", i === slides.length - 1 ? "true" : "false");
+      }
+      function go(d) {
+        var i = Math.min(slides.length - 1, Math.max(0, index() + d));
+        track.scrollTo({ left: i * track.clientWidth, behavior: behavior });
+      }
+      var raf = 0;
+      track.addEventListener("scroll", function () { cancelAnimationFrame(raf); raf = requestAnimationFrame(update); });
+      window.addEventListener("resize", update);
+      prev.addEventListener("click", function () { go(-1); });
+      next.addEventListener("click", function () { go(1); });
+      track.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowLeft") { e.preventDefault(); go(-1); }
+        if (e.key === "ArrowRight") { e.preventDefault(); go(1); }
+      });
+      Array.prototype.forEach.call(slides, function (s, i) {
+        s.addEventListener("click", function () { current = slides; opener = s; show(i); open(); });
+      });
+      update();
+    });
+
+    function show(i) {
+      var n = current.length;
+      currentIndex = (i + n) % n;
+      var s = current[currentIndex], img = s.querySelector("img");
+      lbImg.src = s.getAttribute("data-full");
+      lbImg.alt = img.alt;
+      lbCap.textContent = img.alt;
+      lbCount.textContent = (currentIndex + 1) + " / " + n;
+    }
+    function open() {
+      if (typeof lb.showModal === "function") { lb.showModal(); } else { lb.setAttribute("open", ""); }
+    }
+    function close() {
+      if (lb.close) { lb.close(); } else { lb.removeAttribute("open"); }
+    }
+    lb.addEventListener("close", function () { if (opener) { opener.focus(); } });
+    document.getElementById("lb-close").addEventListener("click", close);
+    document.getElementById("lb-prev").addEventListener("click", function () { show(currentIndex - 1); });
+    document.getElementById("lb-next").addEventListener("click", function () { show(currentIndex + 1); });
+    lb.addEventListener("click", function (e) { if (e.target === lb || e.target.id === "lb-stage") { close(); } });
+    lb.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft") { show(currentIndex - 1); }
+      if (e.key === "ArrowRight") { show(currentIndex + 1); }
+    });
+  })();
+
+  /* ---- Formspree: enquiry form and guide/manual requests ---- */
+  (function () {
+    function wire(form, onOk) {
+      var st = form.querySelector(".form-status"), btn = form.querySelector("button[type=submit]");
+      form.addEventListener("submit", function (e) {
+        if (!window.fetch) { return; }
+        e.preventDefault();
+        btn.disabled = true; st.className = "form-status" + (form.id === "contact-form" ? " full" : ""); st.textContent = "Sending…";
+        fetch(FORM_URL, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
+          .then(function (r) {
+            if (!r.ok) { throw new Error("status " + r.status); }
+            var what = form.querySelector("[name=request]").value;
+            form.reset(); form.querySelector("[name=request]").value = what;
+            st.className += " ok"; st.textContent = onOk;
+          })
+          .catch(function () { st.className += " err"; st.textContent = "Sorry, the message could not be sent. Please try again later or contact us via aurinkolab.fi."; })
+          .then(function () { btn.disabled = false; });
+      });
+    }
+    wire(document.getElementById("contact-form"), "Thank you! We have received your enquiry and will reply soon.");
+    wire(document.getElementById("rq-form"), "Thank you! We will send it to your email.");
+    var rq = document.getElementById("rq"), what = document.getElementById("rq-what");
+    document.querySelectorAll("[data-request]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var name = b.getAttribute("data-request");
+        document.getElementById("rq-h").textContent = "Request: " + name.replace(/ \(.*\)$/, "");
+        what.value = name;
+        var st = rq.querySelector(".form-status"); st.textContent = ""; st.className = "form-status";
+        if (typeof rq.showModal === "function") { rq.showModal(); } else { rq.setAttribute("open", ""); }
+      });
+    });
+    document.getElementById("rq-close").addEventListener("click", function () { if (rq.close) { rq.close(); } else { rq.removeAttribute("open"); } });
+    rq.addEventListener("click", function (e) { if (e.target === rq) { rq.close(); } });
+  })();
+
+  (function () {
+    var links = SETTINGS.links || {};
+    document.querySelectorAll("[data-link]").forEach(function (a) {
+      var url = links[a.getAttribute("data-link")];
+      if (url) { a.href = url; a.rel = "noopener"; a.hidden = false; }
+    });
+    if (SETTINGS.contactEmail) {
+      var line = document.getElementById("contact-line");
+      var btn = document.getElementById("contact-btn");
+      btn.href = "mailto:" + SETTINGS.contactEmail;
+      btn.textContent = "Email us";
+      line.textContent = "Email: " + SETTINGS.contactEmail;
+      line.hidden = false;
+    }
+  })();
+</script>
+</body>
+</html>

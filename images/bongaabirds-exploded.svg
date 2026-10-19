@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 920" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif">
+<defs>
+<linearGradient id="navy" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a5aa3"/><stop offset="1" stop-color="#1d3366"/></linearGradient>
+<linearGradient id="navy2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2a4380"/><stop offset="1" stop-color="#16264d"/></linearGradient>
+<linearGradient id="cell" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2a74b8"/><stop offset=".5" stop-color="#5aa6e6"/><stop offset="1" stop-color="#2a74b8"/></linearGradient>
+<linearGradient id="solar" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#27407a"/><stop offset="1" stop-color="#14224a"/></linearGradient>
+<pattern id="mesh" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.1" fill="#7b8794"/></pattern>
+<marker id="dot" markerWidth="8" markerHeight="8" refX="4" refY="4"><circle cx="4" cy="4" r="3" fill="#1c2733"/></marker>
+</defs>
+<style>
+.t{fill:#1c2733;font-size:21px} .h{fill:#1c2733;font-size:25px;font-weight:800;letter-spacing:.3px} .s{fill:#4a5663;font-size:17px}
+.l{fill:none;stroke:#1c2733;stroke-width:1.6;marker-end:url(#dot)} .ax{stroke:#8a95a1;stroke-width:1.6;stroke-dasharray:7 6;fill:none}
+.o{stroke:#101a33;stroke-width:2.4;stroke-linejoin:round}
+</style>
+<rect width="1600" height="920" fill="#f6f4ee"/>
+<path class="ax" d="M 300 330 H 1180"/>
+<path class="ax" d="M 300 460 H 1180"/>
+<path class="ax" d="M 300 590 H 1180"/>
+<rect x="60" y="405" width="95" height="110" rx="40" fill="#4b5059" stroke="#1c2733" stroke-width="2.4"/>
+<path d="M75 420 q4 40 -2 80" stroke="#6b717b" stroke-width="2" fill="none"/>
+<path d="M87 420 q4 40 -2 80" stroke="#6b717b" stroke-width="2" fill="none"/>
+<path d="M99 420 q4 40 -2 80" stroke="#6b717b" stroke-width="2" fill="none"/>
+<path d="M111 420 q4 40 -2 80" stroke="#6b717b" stroke-width="2" fill="none"/>
+<path d="M123 420 q4 40 -2 80" stroke="#6b717b" stroke-width="2" fill="none"/>
+<path d="M135 420 q4 40 -2 80" stroke="#6b717b" stroke-width="2" fill="none"/>
+<ellipse cx="195" cy="460" rx="15" ry="34" fill="#cfd5db" stroke="#1c2733" stroke-width="2.4"/><ellipse cx="195" cy="460" rx="9" ry="26" fill="url(#mesh)"/>
+<rect x="233" y="440" width="26" height="40" rx="4" fill="#2a2f36" stroke="#1c2733" stroke-width="2.4"/><circle cx="246" cy="460" r="6" fill="#aab3bd"/>
+<polygon class="o" points="496.0,260.0 646.0,360.0 646.0,560.0 496.0,660.0 346.0,560.0 346.0,360.0" fill="url(#navy2)"/>
+<polygon class="o" points="470.0,260.0 620.0,360.0 620.0,560.0 470.0,660.0 320.0,560.0 320.0,360.0" fill="url(#navy)"/>
+<polygon points="470.0,292.0 596.0,376.0 596.0,544.0 470.0,628.0 344.0,544.0 344.0,376.0" fill="none" stroke="#6f8bc9" stroke-width="1.6" opacity=".7"/>
+<circle cx="470" cy="435" r="84" fill="#0f1c3a" stroke="#6fe3d4" stroke-width="7"/><circle cx="470" cy="435" r="70" fill="none" stroke="#2f7f83" stroke-width="1.5"/>
+<text x="470" y="428" text-anchor="middle" fill="#dff7f3" font-size="27" font-weight="700" letter-spacing="2">BONGAA</text><text x="470" y="458" text-anchor="middle" fill="#dff7f3" font-size="27" font-weight="700" letter-spacing="2">BIRDS</text>
+<circle cx="380" cy="590" r="22" fill="#2b66a8" stroke="#101a33" stroke-width="2.4"/><circle cx="380" cy="590" r="12" fill="#3f86d1"/>
+<g transform="rotate(-12 540 570)"><rect x="500" y="535" width="82" height="64" rx="5" fill="#f5f5f0" stroke="#1c2733" stroke-width="1.6"/><path d="M512 552h58M512 564h58M512 576h40" stroke="#6b7580" stroke-width="3"/></g>
+<polygon class="o" points="775,290 905,290 940,325 940,595 905,630 775,630 740,595 740,325" fill="#2f8f4e"/>
+<g stroke="#8fe0a8" stroke-width="1.6" fill="none" opacity=".75"><path d="M760 380H900M760 540H915M800 365V400M880 365V420M770 480H760"/></g>
+<rect x="780" y="298" width="54" height="54" rx="4" fill="#d8b97a" stroke="#101a33" stroke-width="2"/><text x="807" y="322" text-anchor="middle" font-size="14" font-weight="700" fill="#2b2b2b">GPS</text><text x="807" y="338" text-anchor="middle" font-size="9" fill="#2b2b2b">sync</text>
+<rect x="850" y="300" width="36" height="26" rx="3" fill="#c9ced4" stroke="#101a33" stroke-width="2"/><rect x="856" y="305" width="24" height="9" fill="#6b7580"/>
+<rect x="775" y="400" width="66" height="80" rx="4" fill="#b9bfc7" stroke="#101a33" stroke-width="2"/><rect x="785" y="410" width="46" height="20" fill="#59616b"/><text x="808" y="458" text-anchor="middle" font-size="11" font-weight="700" fill="#1c2733">ESP32-S3</text>
+<rect x="858" y="490" width="62" height="64" rx="4" fill="#cfd3d8" stroke="#101a33" stroke-width="2"/><text x="866" y="516" text-anchor="start" font-size="13" font-weight="700" fill="#1c2733">GSM</text><rect x="900" y="500" width="14" height="22" rx="3" fill="#e0c25a"/>
+<rect x="862" y="395" width="26" height="26" rx="3" fill="#222" stroke="#101a33" stroke-width="2"/>
+<rect x="790" y="530" width="52" height="52" rx="3" fill="#2a2f36" stroke="#101a33" stroke-width="2"/><g stroke="#8a95a1" stroke-width="2"><path d="M796 526v4M796 582v4"/><path d="M806 526v4M806 582v4"/><path d="M816 526v4M816 582v4"/><path d="M826 526v4M826 582v4"/><path d="M836 526v4M836 582v4"/></g>
+<rect x="772" y="596" width="40" height="18" rx="2" fill="#222"/><rect x="826" y="598" width="14" height="10" fill="#222"/><rect x="760" y="498" width="16" height="10" fill="#222"/>
+<rect x="695" y="470" width="40" height="50" rx="4" fill="#c92b2b" stroke="#101a33" stroke-width="2"/><rect x="705" y="476" width="20" height="12" fill="#f0f0f0"/>
+<rect x="975" y="370" width="130" height="200" rx="8" fill="#2a2d33" stroke="#101a33" stroke-width="2.4"/>
+<rect x="987" y="395" width="22" height="160" rx="9" fill="url(#cell)" stroke="#101a33" stroke-width="2"/><rect x="992" y="388" width="12" height="9" rx="2" fill="#c9ced4"/>
+<rect x="1015" y="395" width="22" height="160" rx="9" fill="url(#cell)" stroke="#101a33" stroke-width="2"/><rect x="1020" y="388" width="12" height="9" rx="2" fill="#c9ced4"/>
+<rect x="1043" y="395" width="22" height="160" rx="9" fill="url(#cell)" stroke="#101a33" stroke-width="2"/><rect x="1048" y="388" width="12" height="9" rx="2" fill="#c9ced4"/>
+<rect x="1071" y="395" width="22" height="160" rx="9" fill="url(#cell)" stroke="#101a33" stroke-width="2"/><rect x="1076" y="388" width="12" height="9" rx="2" fill="#c9ced4"/>
+<polygon class="o" points="1300.0,260.0 1450.0,360.0 1450.0,560.0 1300.0,660.0 1150.0,560.0 1150.0,360.0" fill="url(#navy)"/>
+<polygon class="o" points="1300.0,290.0 1427.5,375.0 1427.5,545.0 1300.0,630.0 1172.5,545.0 1172.5,375.0" fill="#152447"/>
+<circle cx="1330" cy="440" r="70" fill="#0f1c3a" stroke="#2c4379" stroke-width="3"/>
+<circle cx="1230" cy="360" r="22" fill="#0b1530" stroke="#2c4379" stroke-width="3"/><circle cx="1230" cy="360" r="8" fill="#6b7580"/>
+<path class="o" d="M1237 298 V250 q0 -22 22 -22 h82 q22 0 22 22 V298" fill="none" stroke-width="12" stroke="#1d3366"/>
+<circle cx="1300" cy="600" r="20" fill="#0b1530" stroke="#2c4379" stroke-width="3"/>
+<path d="M1300 650 V700" stroke="#101a33" stroke-width="6"/>
+<path d="M1300 710 L1180 890 M1300 710 V895 M1300 710 L1420 890" stroke="#2a2f36" stroke-width="12" stroke-linecap="round"/>
+<rect x="1252" y="690" width="96" height="24" rx="8" fill="#2a2f36" stroke="#101a33" stroke-width="2.4"/><rect x="1280" y="714" width="40" height="30" rx="6" fill="#3a4049"/>
+<polygon class="o" points="1010,225 1150,175 1190,265 1050,310" fill="url(#solar)"/>
+<g stroke="#5f79b8" stroke-width="1.4"><path d="M1033,218 L1073,305 M1057,210 L1097,297 M1080,201 L1120,288 M1104,193 L1144,280 M1019,254 L1158,204 M1030,282 L1170,232"/></g>
+<path d="M1050 310 C1050 340 1180 320 1232 360" stroke="#d63b3b" stroke-width="3" fill="none"/><path d="M1056 312 C1058 346 1186 330 1236 366" stroke="#1c2733" stroke-width="3" fill="none"/>
+<rect x="1087" y="298" width="40" height="30" rx="4" fill="#2a2f36" stroke="#101a33" stroke-width="2" transform="rotate(-20 1107 313)"/>
+<g transform="translate(0,95)">
+<rect x="1440" y="640" width="140" height="120" rx="16" fill="#fffdf8" stroke="#1c2733" stroke-width="2"/>
+<path d="M1470 660 L1550 676 L1550 736 L1475 750 Z" fill="url(#navy)" stroke="#101a33" stroke-width="2"/>
+<path d="M1458 706 q50 22 108 -8" stroke="#2a2f36" stroke-width="14" fill="none"/><rect x="1500" y="690" width="22" height="24" rx="3" fill="#8a95a1" stroke="#101a33" stroke-width="1.5"/>
+</g>
+<text x="60" y="60" class="h" text-anchor="start">EXTERNAL MICROPHONE</text>
+<text x="60" y="90" class="h" text-anchor="start">ASSEMBLY</text>
+<text x="60" y="570" class="t" text-anchor="start">Foam / fur</text>
+<text x="60" y="596" class="t" text-anchor="start">windscreen</text>
+<polyline class="l" points="108,550 108,518"/>
+<text x="60" y="300" class="t" text-anchor="start">Waterproof acoustic</text>
+<text x="60" y="326" class="t" text-anchor="start">membrane</text>
+<polyline class="l" points="140,338 140,380 195,380 195,426"/>
+<text x="150" y="690" class="t" text-anchor="start">Digital MEMS microphone</text>
+<polyline class="l" points="246,666 246,484"/>
+<text x="200" y="745" class="h" text-anchor="start">FRONT CASING</text>
+<text x="200" y="772" class="s" text-anchor="start">custom project info label</text>
+<text x="200" y="795" class="s" text-anchor="start">and built-in Wi-Fi / Bluetooth antennas</text>
+<polyline class="l" points="420,722 420,636"/>
+<circle cx="807" cy="298" r="13" fill="#1c2733" stroke="#f6f4ee" stroke-width="2"/><text x="807" y="304" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">1</text>
+<circle cx="868" cy="300" r="13" fill="#1c2733" stroke="#f6f4ee" stroke-width="2"/><text x="868" y="306" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">2</text>
+<circle cx="808" cy="402" r="13" fill="#1c2733" stroke="#f6f4ee" stroke-width="2"/><text x="808" y="408" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">3</text>
+<circle cx="920" cy="492" r="13" fill="#1c2733" stroke="#f6f4ee" stroke-width="2"/><text x="920" y="498" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">4</text>
+<circle cx="875" cy="397" r="13" fill="#1c2733" stroke="#f6f4ee" stroke-width="2"/><text x="875" y="403" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">5</text>
+<circle cx="816" cy="532" r="13" fill="#1c2733" stroke="#f6f4ee" stroke-width="2"/><text x="816" y="538" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">6</text>
+<text x="560" y="690" class="h" text-anchor="start">MAIN CIRCUIT BOARD (PCB)</text>
+<circle cx="573" cy="718" r="12" fill="#1c2733"/><text x="573" y="724" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">1</text>
+<text x="594" y="724" class="t" text-anchor="start">Ceramic GPS antenna (time sync)</text>
+<circle cx="573" cy="748" r="12" fill="#1c2733"/><text x="573" y="754" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">2</text>
+<text x="594" y="754" class="t" text-anchor="start">On-board microSD card slot</text>
+<circle cx="573" cy="778" r="12" fill="#1c2733"/><text x="573" y="784" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">3</text>
+<text x="594" y="784" class="t" text-anchor="start">ESP32-S3 microcontroller</text>
+<circle cx="573" cy="808" r="12" fill="#1c2733"/><text x="573" y="814" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">4</text>
+<text x="594" y="814" class="t" text-anchor="start">GSM module with SIM slot</text>
+<circle cx="573" cy="838" r="12" fill="#1c2733"/><text x="573" y="844" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">5</text>
+<text x="594" y="844" class="t" text-anchor="start">BME280 temperature &amp; humidity sensor</text>
+<circle cx="573" cy="868" r="12" fill="#1c2733"/><text x="573" y="874" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">6</text>
+<text x="594" y="874" class="t" text-anchor="start">Power-saving schedule &amp; trigger circuit</text>
+<text x="1010" y="690" class="t" text-anchor="start">Lithium AA cells</text>
+<text x="1010" y="716" class="s" text-anchor="start">(rated for Finnish frost)</text>
+<polyline class="l" points="1060,668 1060,574"/>
+<text x="1010" y="52" class="h" text-anchor="start">POWER MODULE</text>
+<text x="1010" y="80" class="s" text-anchor="start">Solar panel for spring-to-autumn</text>
+<text x="1010" y="102" class="s" text-anchor="start">operation</text>
+<polyline class="l" points="1100,112 1100,196"/>
+<text x="1250" y="152" class="h" text-anchor="start">BACK CASING</text>
+<text x="1250" y="182" class="h" text-anchor="start">AND MOUNTING</text>
+<polyline class="l" points="1470,160 1470,200 1385,306"/>
+<text x="1365" y="730" class="t" text-anchor="start">Tripod mount</text>
+<polyline class="l" points="1360,722 1350,708"/>
+<text x="1590" y="880" class="t" text-anchor="end">Tree strap</text>
+<text x="1590" y="902" class="s" text-anchor="end">optional, ~2 m up a tree</text>
+</svg>
